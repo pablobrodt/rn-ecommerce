@@ -1,3 +1,5 @@
+[![Unit Tests](https://github.com/pablobrodt/rn-ecommerce/actions/workflows/unit-tests.yml/badge.svg?branch=develop&event=push)](https://github.com/pablobrodt/rn-ecommerce/actions/workflows/unit-tests.yml)
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
