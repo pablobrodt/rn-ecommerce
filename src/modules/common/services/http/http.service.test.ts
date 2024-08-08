@@ -32,6 +32,6 @@ describe('Http Service Tests', () => {
     new TestHttpService('fake-base-url');
     new TestHttpService('another-fake-base-url');
 
-    expect(fakeOnCreate).toHaveBeenCalledTimes(1);
+    expect(fakeOnCreate).toHaveBeenCalledTimes(2);
   });
 });
