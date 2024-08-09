@@ -15,8 +15,8 @@ export abstract class HttpService {
 
   abstract get<TReturn>(
     endpoint: string,
-    params: Record<string, string>,
-  ): Promise<TReturn | TReturn[]>;
+    params?: Record<string, string>,
+  ): Promise<TReturn>;
 
   abstract post<TReturn, TData>(
     endpoint: string,

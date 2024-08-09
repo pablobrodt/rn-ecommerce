@@ -11,7 +11,7 @@ class TestHttpService extends HttpService {
   get<TReturn>(
     _endpoint: string,
     _params: Record<string, string>,
-  ): Promise<TReturn | TReturn[]> {
+  ): Promise<TReturn> {
     return Promise.resolve({} as TReturn);
   }
 
