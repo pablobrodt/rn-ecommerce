@@ -15,6 +15,7 @@ const axiosCreateMock = axios.create as jest.MockedFunction<
 
 describe('Axios Service Tests', () => {
   const fakeBaseUrl = '/fake-url';
+  const fakeResponseData = 'fake data';
   let axiosService: AxiosHttpService;
 
   beforeEach(() => {
@@ -36,12 +37,16 @@ describe('Axios Service Tests', () => {
   it('should make get with endpoint, no params and also should return response data', async () => {
     const expectedEndpoint = '/fake';
     const expectedParams = { params: undefined };
-    const expectedResult = 'fake get response';
-    axiosInstanceMock.get.mockResolvedValueOnce({ data: expectedResult });
+    const expectedResponseData = fakeResponseData;
+    axiosInstanceMock.get.mockResolvedValueOnce({
+      data: fakeResponseData,
+      status: 200,
+      statusText: 'Ok',
+    });
 
     const result = await axiosService.get<string>(expectedEndpoint);
 
-    expect(result).toBe(expectedResult);
+    expect(result.data).toEqual(expectedResponseData);
     expect(axiosInstanceMock.get).toHaveBeenCalledWith(
       expectedEndpoint,
       expectedParams,
@@ -52,12 +57,16 @@ describe('Axios Service Tests', () => {
     const fakeParams = { fakeParam: 'fake' };
     const expectedEndpoint = '/fake';
     const expectedParams = { params: fakeParams };
-    const expectedResult = 'fake get response';
-    axiosInstanceMock.get.mockResolvedValueOnce({ data: expectedResult });
+    const expectedResponseData = fakeResponseData;
+    axiosInstanceMock.get.mockResolvedValueOnce({
+      data: fakeResponseData,
+      status: 200,
+      statusText: 'Ok',
+    });
 
     const result = await axiosService.get<string>(expectedEndpoint, fakeParams);
 
-    expect(result).toBe(expectedResult);
+    expect(result.data).toEqual(expectedResponseData);
     expect(axiosInstanceMock.get).toHaveBeenCalledWith(
       expectedEndpoint,
       expectedParams,
@@ -68,15 +77,19 @@ describe('Axios Service Tests', () => {
     const fakeData = { title: 'fake' };
     const expectedEndpoint = '/fake';
     const expectedData = { data: fakeData };
-    const expectedResult = 'fake post response';
-    axiosInstanceMock.post.mockResolvedValueOnce({ data: expectedResult });
+    const expectedResponseData = fakeResponseData;
+    axiosInstanceMock.post.mockResolvedValueOnce({
+      data: fakeResponseData,
+      status: 200,
+      statusText: 'Ok',
+    });
 
     const result = await axiosService.post<string, { title: string }>(
       expectedEndpoint,
       fakeData,
     );
 
-    expect(result).toBe(expectedResult);
+    expect(result.data).toEqual(expectedResponseData);
     expect(axiosInstanceMock.post).toHaveBeenCalledWith(
       expectedEndpoint,
       expectedData,
@@ -87,15 +100,19 @@ describe('Axios Service Tests', () => {
     const fakeParams = { fakeParam: 'fake' };
     const expectedEndpoint = '/fake';
     const expectedParams = { params: fakeParams };
-    const expectedResult = 'fake delete response';
-    axiosInstanceMock.delete.mockResolvedValueOnce({ data: expectedResult });
+    const expectedResponseData = fakeResponseData;
+    axiosInstanceMock.delete.mockResolvedValueOnce({
+      data: fakeResponseData,
+      status: 200,
+      statusText: 'Ok',
+    });
 
     const result = await axiosService.remove<string>(
       expectedEndpoint,
       fakeParams,
     );
 
-    expect(result).toBe(expectedResult);
+    expect(result.data).toEqual(expectedResponseData);
     expect(axiosInstanceMock.delete).toHaveBeenCalledWith(
       expectedEndpoint,
       expectedParams,

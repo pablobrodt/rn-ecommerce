@@ -1,4 +1,5 @@
 import axios, { type AxiosResponse, type AxiosInstance } from 'axios';
+import { HttpResponse } from '@common/models/http-response.model';
 import { HttpService } from '../http/http.service';
 
 export class AxiosHttpService extends HttpService {
@@ -15,7 +16,7 @@ export class AxiosHttpService extends HttpService {
   async get<TReturn>(
     endpoint: string,
     params?: Record<string, string>,
-  ): Promise<TReturn> {
+  ): Promise<HttpResponse<TReturn>> {
     const response: AxiosResponse<TReturn> = await this.http.get<TReturn>(
       endpoint,
       {
@@ -23,26 +24,41 @@ export class AxiosHttpService extends HttpService {
       },
     );
 
-    return response.data;
+    return new HttpResponse<TReturn>(
+      response.data,
+      response.status,
+      response.statusText,
+    );
   }
 
-  async post<TReturn, TData>(endpoint: string, data: TData): Promise<TReturn> {
+  async post<TReturn, TData>(
+    endpoint: string,
+    data: TData,
+  ): Promise<HttpResponse<TReturn>> {
     const response: AxiosResponse<TReturn, TData> = await this.http.post(
       endpoint,
       { data },
     );
 
-    return response.data;
+    return new HttpResponse<TReturn>(
+      response.data,
+      response.status,
+      response.statusText,
+    );
   }
 
   async remove<TReturn>(
     endpoint: string,
     params: Record<string, string>,
-  ): Promise<TReturn> {
+  ): Promise<HttpResponse<TReturn>> {
     const response: AxiosResponse<TReturn> = await this.http.delete(endpoint, {
       params,
     });
 
-    return response.data;
+    return new HttpResponse<TReturn>(
+      response.data,
+      response.status,
+      response.statusText,
+    );
   }
 }

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { HttpService } from '@common/services/http/http.service';
+import { HttpError } from '@common/models/errors/http-error.model';
 
 interface HttpViewModel<TData> {
   data?: TData[];
   loading: boolean;
+  error?: HttpError;
   get: (params?: Record<string, string>) => Promise<void>;
 }
 
@@ -14,6 +16,7 @@ export function useHttpViewModel<TData, TDto>(
 ): HttpViewModel<TData> {
   const [data, setData] = useState<TData[]>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<HttpError>();
 
   function startLoading() {
     setLoading(true);
@@ -29,15 +32,23 @@ export function useHttpViewModel<TData, TDto>(
 
       const response = await httpService.get<TDto | TDto[]>(endpoint, params);
 
-      const mappedData = Array.isArray(response)
-        ? response.map(mapDtoToData)
-        : [mapDtoToData(response)];
+      if (response.status !== 200) {
+        throw new HttpError(response.statusText, response.status);
+      }
+
+      const mappedData = Array.isArray(response.data)
+        ? response.data.map(mapDtoToData)
+        : [mapDtoToData(response.data)];
 
       setData(mappedData);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      if (err instanceof HttpError) {
+        setError(err);
+      }
 
-      throw error;
+      if (err instanceof Error) {
+        throw err;
+      }
     } finally {
       stopLoading();
     }
@@ -46,6 +57,7 @@ export function useHttpViewModel<TData, TDto>(
   return {
     data,
     loading,
+    error,
     get,
   };
 }
