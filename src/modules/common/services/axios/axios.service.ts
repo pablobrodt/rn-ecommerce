@@ -14,8 +14,8 @@ export class AxiosHttpService extends HttpService {
 
   async get<TReturn>(
     endpoint: string,
-    params: Record<string, string>,
-  ): Promise<TReturn | TReturn[]> {
+    params?: Record<string, string>,
+  ): Promise<TReturn> {
     const response: AxiosResponse<TReturn> = await this.http.get<TReturn>(
       endpoint,
       {
