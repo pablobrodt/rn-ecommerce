@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDirs": ["src"],
     "paths": {
+      "@cart/*": ["./src/modules/cart/*"],
       "@common/*": ["./src/modules/common/*"],
       "@products/*": ["./src/modules/products/*"]
     }
