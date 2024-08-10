@@ -1,3 +1,5 @@
 export enum Colors {
-  ANTI_FLASH_WHITE = '#F1F1F1',
+  NEUTRAL_REGULAR = '#F1F1F1',
+  SUCCESS_REGULAR = '#40a250',
+  DANGER_REGULAR = '#c04547',
 }

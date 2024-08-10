@@ -4,6 +4,6 @@ import { Colors } from '@common/view/constants/colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.ANTI_FLASH_WHITE,
+    backgroundColor: Colors.NEUTRAL_REGULAR,
   },
 });

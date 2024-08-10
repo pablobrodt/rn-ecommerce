@@ -1,5 +1,5 @@
-import type { StyleProp, ViewProps } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
-export type PropsWithStyle<TStyleProps = ViewProps> = {
+export type PropsWithStyle<TStyleProps = ViewStyle> = {
   style?: StyleProp<TStyleProps>;
 };

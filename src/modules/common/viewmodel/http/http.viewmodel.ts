@@ -26,8 +26,13 @@ export function useHttpViewModel<TData, TDto>(
     setLoading(false);
   }
 
+  function clearError() {
+    setError(undefined);
+  }
+
   async function get(params?: Record<string, string>) {
     try {
+      clearError();
       startLoading();
 
       const response = await httpService.get<TDto | TDto[]>(endpoint, params);
