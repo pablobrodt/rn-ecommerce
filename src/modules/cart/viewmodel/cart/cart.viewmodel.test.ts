@@ -37,7 +37,7 @@ describe('Cart View Model Tests', () => {
     expect(setProductsMock).toHaveBeenCalledWith(expectedProducts);
   });
 
-  it('should increment an existing product quantity', () => {
+  it('should increase an existing product quantity', () => {
     const anotherFakeProduct = {
       ...fakeProduct,
       id: '00',
@@ -51,13 +51,62 @@ describe('Cart View Model Tests', () => {
     const setProductsMock = jest.fn();
     useCartStoreMock.mockReturnValueOnce({
       products: [{ ...fakeProduct, quantity: 1 }, anotherFakeProduct],
-      productCount: 1,
+      productCount: 2,
       setProducts: setProductsMock,
     });
 
     const { result } = renderHook(() => useCartViewModel());
 
-    result.current.addProduct(fakeProduct);
+    result.current.increaseProduct(fakeProduct.id);
+
+    expect(setProductsMock).toHaveBeenCalledTimes(1);
+    expect(setProductsMock).toHaveBeenCalledWith(expectedProducts);
+  });
+
+  it('should decrease an existing product quantity', () => {
+    const anotherFakeProduct = {
+      ...fakeProduct,
+      id: '00',
+      name: 'another fake product',
+      quantity: 1,
+    };
+    const expectedProducts: CartProduct[] = [
+      { ...fakeProduct, quantity: 1 },
+      anotherFakeProduct,
+    ];
+    const setProductsMock = jest.fn();
+    useCartStoreMock.mockReturnValueOnce({
+      products: [{ ...fakeProduct, quantity: 2 }, anotherFakeProduct],
+      productCount: 2,
+      setProducts: setProductsMock,
+    });
+
+    const { result } = renderHook(() => useCartViewModel());
+
+    result.current.decreaseProduct(fakeProduct.id);
+
+    expect(setProductsMock).toHaveBeenCalledTimes(1);
+    expect(setProductsMock).toHaveBeenCalledWith(expectedProducts);
+  });
+
+  it('should remove product when decreasing from a quantity of 1', () => {
+    const anotherFakeProduct = {
+      ...fakeProduct,
+      id: '00',
+      name: 'another fake product',
+      quantity: 1,
+    };
+    const expectedProducts: CartProduct[] = [anotherFakeProduct];
+    const setProductsMock = jest.fn();
+    useCartStoreMock.mockReturnValueOnce({
+      products: [{ ...fakeProduct, quantity: 1 }, anotherFakeProduct],
+      productCount: 2,
+      setProducts: setProductsMock,
+    });
+
+    const { result } = renderHook(() => useCartViewModel());
+
+    result.current.decreaseProduct(fakeProduct.id);
 
     expect(setProductsMock).toHaveBeenCalledTimes(1);
     expect(setProductsMock).toHaveBeenCalledWith(expectedProducts);

@@ -5,9 +5,9 @@ import type { Product } from '@products/model/product.model';
 export function useCartViewModel() {
   const { products, productCount, setProducts } = useCartStore();
 
-  function incrementProductQuantity(id: string): void {
+  function increaseProduct(productId: string): void {
     const newProducts = products.map((product) => {
-      if (product.id !== id) {
+      if (product.id !== productId) {
         return product;
       }
 
@@ -17,7 +17,26 @@ export function useCartViewModel() {
     setProducts(newProducts);
   }
 
-  function addNewProduct(product: Product): void {
+  function decreaseProduct(productId: string): void {
+    const foundProduct = products.find(({ id }) => id === productId);
+
+    if (foundProduct?.quantity === 1) {
+      removeProduct(productId);
+      return;
+    }
+
+    const newProducts = products.map((product) => {
+      if (product.id !== productId) {
+        return product;
+      }
+
+      return { ...product, quantity: product.quantity - 1 };
+    });
+
+    setProducts(newProducts);
+  }
+
+  function addProduct(product: Product): void {
     const cartProduct: CartProduct = {
       ...product,
       quantity: 1,
@@ -26,22 +45,18 @@ export function useCartViewModel() {
     setProducts([...products, cartProduct]);
   }
 
-  function addProduct(product: Product): void {
-    const hasProduct = Boolean(products.find(({ id }) => id === product.id));
-
-    if (!hasProduct) {
-      addNewProduct(product);
-      return;
-    }
-
-    incrementProductQuantity(product.id);
-  }
-
   function removeProduct(id: string): void {
     const filteredProducts = products.filter((product) => product.id !== id);
 
     setProducts(filteredProducts);
   }
 
-  return { products, productCount, addProduct, removeProduct };
+  return {
+    products,
+    productCount,
+    addProduct,
+    removeProduct,
+    increaseProduct,
+    decreaseProduct,
+  };
 }
