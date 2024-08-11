@@ -3,12 +3,15 @@ import { SafeArea } from '@common/view/components/safe-area/safe-area.component'
 import { useProductsViewModel } from '@products/viewmodel/products/products.viewmodel';
 import { Product } from '@products/view/components/product/product.component';
 import type { Product as ProductModel } from '@products/model/product.model';
+
 import { styles } from './products.style';
 
-export function ProductsScreen() {
-  const { products, error, loading, addToCart } = useProductsViewModel();
+const PRODUCT_LIST_COLUMNS = 2;
 
-  if (loading) {
+export function ProductsScreen() {
+  const productsViewModel = useProductsViewModel();
+
+  if (productsViewModel.loading) {
     return (
       <SafeArea style={styles.container}>
         <ActivityIndicator />
@@ -16,7 +19,7 @@ export function ProductsScreen() {
     );
   }
 
-  if (error) {
+  if (productsViewModel.error) {
     return (
       <SafeArea style={styles.container}>
         <ActivityIndicator />
@@ -25,10 +28,14 @@ export function ProductsScreen() {
   }
 
   function renderProduct(product: ProductModel) {
+    const isInCart = productsViewModel.isInCart(product.id);
+
     return (
       <Product
         product={product}
-        onPress={(pressedProduct) => addToCart(pressedProduct)}
+        onAddToCart={productsViewModel.addToCart}
+        onRemoveFromCart={productsViewModel.removeFromCart}
+        isInCart={isInCart}
       />
     );
   }
@@ -36,9 +43,9 @@ export function ProductsScreen() {
   return (
     <SafeArea style={styles.container}>
       <FlatList
-        data={products}
+        data={productsViewModel.products}
         renderItem={({ item: product }) => renderProduct(product)}
-        numColumns={2}
+        numColumns={PRODUCT_LIST_COLUMNS}
         style={styles.productList}
         columnWrapperStyle={styles.productListColumn}
         contentContainerStyle={styles.productListContent}

@@ -4,35 +4,41 @@ import { Text } from '@common/view/components/text/text.component';
 import { formatCurrency } from '@common/utils/format-currency/format-currency.util';
 import type { Product } from '@products/model/product.model';
 
-import { CartButton } from '../cart-button/cart-button.component';
+import { CartActionButton } from '../cart-action-button/cart-action-button.component';
 import { styles } from './product.style';
 
 type ProductProps = {
   product: Product;
-  onPress: (product: Product) => void;
+  isInCart: boolean;
+  onAddToCart: (product: Product) => void;
+  onRemoveFromCart: (productId: string) => void;
 };
 
-export function Product({ product, onPress }: ProductProps) {
+export function Product({
+  product,
+  isInCart,
+  onAddToCart,
+  onRemoveFromCart,
+}: ProductProps) {
+  const cartActionButtonTestId = `product-${product.id}-cart-action`;
+
   function handlePress() {
-    onPress(product);
+    if (!isInCart) {
+      onAddToCart(product);
+      return;
+    }
+
+    onRemoveFromCart(product.id);
   }
 
   function renderCardButton() {
-    // TODO adicionar logica de verificacao no carrinho
-    const isInCart = false;
-
-    if (!isInCart) {
-      return (
-        <CartButton style={styles.button} onPress={handlePress}>
-          +
-        </CartButton>
-      );
-    }
-
     return (
-      <CartButton style={styles.button} onPress={handlePress}>
-        -
-      </CartButton>
+      <CartActionButton
+        isInCart={isInCart}
+        style={styles.button}
+        onPress={handlePress}
+        testId={cartActionButtonTestId}
+      />
     );
   }
 
