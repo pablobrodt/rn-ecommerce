@@ -1,6 +1,6 @@
-import { Product } from '@products/model/product.model';
+import { CartProduct } from './cart-product.model';
 
 export type Cart = {
-  products: Product[];
+  products: CartProduct[];
   productCount: number;
 };

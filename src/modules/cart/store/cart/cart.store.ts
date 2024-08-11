@@ -1,33 +1,33 @@
 import { create } from 'zustand';
+import type { Store, StoreHook } from '@common/store/store';
 import type { Cart } from '@cart/model/cart.model';
-import {
-  StoreProperties,
-  StoreService,
-} from '@common/services/store/store.service';
-import { Product } from '@products/model/product.model';
+import type { CartProduct } from '@cart/model/cart-product.model';
 
 type CartStoreSetters = {
-  addProduct: (product: Product) => void;
+  setProducts: (products: CartProduct[]) => void;
 };
 
-const useZustandStore = create<StoreProperties<Cart> & CartStoreSetters>(
-  (set) => ({
-    products: [],
-    productCount: 0,
-    addProduct: (product: Product) =>
-      set((state) => ({
-        products: [...state.products, product],
-        productCount: state.productCount + 1,
-      })),
-  }),
-);
+export type CartStore = Store<Cart, CartStoreSetters>;
 
-export const useCartStore: StoreService<Cart, CartStoreSetters> = () => {
-  const { products, productCount, addProduct } = useZustandStore();
+const useZustandStore = create<CartStore>((set) => ({
+  products: [],
+  productCount: 0,
+  setProducts: (products: CartProduct[]) =>
+    set(() => ({
+      products,
+      productCount: products.length,
+    })),
+}));
+
+export const useCartStore: StoreHook<
+  Cart,
+  CartStoreSetters
+> = (): CartStore => {
+  const { products, productCount, setProducts } = useZustandStore();
 
   return {
     products,
     productCount,
-    addProduct,
+    setProducts,
   };
 };
