@@ -127,4 +127,32 @@ describe('Cart View Model Tests', () => {
     expect(setProductsMock).toHaveBeenCalledTimes(1);
     expect(setProductsMock).toHaveBeenCalledWith([]);
   });
+
+  it('should return true if cart contains product 171', () => {
+    useCartStoreMock.mockReturnValueOnce({
+      products: [{ ...fakeProduct, quantity: 1 }],
+      productCount: 1,
+      setProducts: jest.fn(),
+    });
+
+    const { result } = renderHook(() => useCartViewModel());
+
+    const hasProduct = result.current.contains('171');
+
+    expect(hasProduct).toBe(true);
+  });
+
+  it('should return false if cart dont contains product 171', () => {
+    useCartStoreMock.mockReturnValueOnce({
+      products: [{ ...fakeProduct, id: '00', quantity: 1 }],
+      productCount: 1,
+      setProducts: jest.fn(),
+    });
+
+    const { result } = renderHook(() => useCartViewModel());
+
+    const hasProduct = result.current.contains('171');
+
+    expect(hasProduct).toBe(false);
+  });
 });

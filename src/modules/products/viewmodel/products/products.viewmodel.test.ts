@@ -109,4 +109,22 @@ describe('Product View Model Tests', () => {
     expect(removeProductMock).toHaveBeenCalledTimes(1);
     expect(removeProductMock).toHaveBeenCalledWith(fakeProductId);
   });
+
+  it('should call cart view model contains with id 171', () => {
+    const containsMock = jest.fn();
+    useCartViewModelMock.mockReturnValueOnce({
+      products: [],
+      productCount: 0,
+      addProduct: jest.fn(),
+      removeProduct: jest.fn(),
+      contains: containsMock,
+    });
+
+    const { result } = renderHook(() => useProductsViewModel());
+
+    result.current.isInCart('171');
+
+    expect(containsMock).toHaveBeenCalledTimes(1);
+    expect(containsMock).toHaveBeenCalledWith('171');
+  });
 });

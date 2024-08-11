@@ -51,6 +51,10 @@ export function useCartViewModel() {
     setProducts(filteredProducts);
   }
 
+  function contains(productId: string): boolean {
+    return products.some((product) => product.id === productId);
+  }
+
   return {
     products,
     productCount,
@@ -58,5 +62,6 @@ export function useCartViewModel() {
     removeProduct,
     increaseProduct,
     decreaseProduct,
+    contains,
   };
 }

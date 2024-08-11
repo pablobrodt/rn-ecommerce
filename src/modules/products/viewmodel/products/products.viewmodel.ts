@@ -13,6 +13,7 @@ type ProductsViewModel = {
   getProducts: () => void;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
+  isInCart: (productId: string) => boolean;
 };
 
 function mapDtoToData(dto: ProductDto): Product {
@@ -50,6 +51,10 @@ export function useProductsViewModel(): ProductsViewModel {
     cartViewModel.removeProduct(productId);
   }
 
+  function isInCart(productId: string): boolean {
+    return cartViewModel.contains(productId);
+  }
+
   return {
     products: httpViewModel.data,
     loading: httpViewModel.loading,
@@ -57,5 +62,6 @@ export function useProductsViewModel(): ProductsViewModel {
     getProducts,
     addToCart,
     removeFromCart,
+    isInCart,
   };
 }
