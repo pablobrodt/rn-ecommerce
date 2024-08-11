@@ -6,4 +6,7 @@ module.exports = {
     '<rootDir>/src/modules/cart/store/cart/cart.store.ts',
     '<rootDir>/src/modules/common/services/http/mock/http.service.mock.ts',
   ],
+  moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__mocks__/svgMock.ts',
+  },
 };
