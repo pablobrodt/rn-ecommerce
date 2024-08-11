@@ -3,13 +3,15 @@ import { TouchableOpacity } from 'react-native';
 
 import { styles } from './button.style';
 import { PropsWithStyle } from '@common/view/types/props-with-style';
+import { PropsWithTestId } from '@common/view/types/props-with-test-id';
 
 type ButtonProps = {
   onPress: () => void;
 } & PropsWithChildren &
-  PropsWithStyle;
+  PropsWithStyle &
+  PropsWithTestId;
 
-export function Button({ children, style, onPress }: ButtonProps) {
+export function Button({ children, style, testId, onPress }: ButtonProps) {
   function handlePress() {
     onPress();
   }
@@ -19,6 +21,7 @@ export function Button({ children, style, onPress }: ButtonProps) {
       style={[styles.container, style]}
       activeOpacity={0.7}
       onPress={handlePress}
+      testID={testId}
     >
       {children}
     </TouchableOpacity>
