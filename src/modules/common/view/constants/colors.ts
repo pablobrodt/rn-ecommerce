@@ -1,5 +1,10 @@
 export enum Colors {
-  NEUTRAL_REGULAR = '#F1F1F1',
+  TRANSPARENT = 'transparent',
+  WHITE = '#FFFFFF',
+  BLACK = '#000000',
+  NEUTRAL_LIGHT = '#F1F1F1',
+  NEUTRAL_REGULAR = '#d8d8d8',
   SUCCESS_REGULAR = '#40a250',
   DANGER_REGULAR = '#c04547',
+  HIGHLIGHT_REGULAR = '#3384aa',
 }
