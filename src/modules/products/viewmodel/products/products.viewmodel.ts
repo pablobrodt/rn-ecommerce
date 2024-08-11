@@ -1,9 +1,10 @@
-import { HttpError } from '@common/models/errors/http-error.model';
+import { useEffect } from 'react';
+import { useCartViewModel } from '@cart/viewmodel/cart/cart.viewmodel';
+import type { HttpError } from '@common/models/errors/http-error.model';
 import { AxiosHttpService } from '@common/services/axios/axios.service';
 import { useHttpViewModel } from '@common/viewmodel/http/http.viewmodel';
-import { Product } from '@products/model/product.model';
-import { ProductDto } from '@products/model/product-dto.model';
-import { useEffect } from 'react';
+import type { Product } from '@products/model/product.model';
+import type { ProductDto } from '@products/model/product-dto.model';
 
 type ProductsViewModel = {
   products?: Product[];
@@ -31,6 +32,7 @@ export function useProductsViewModel(): ProductsViewModel {
     axiosHttpService,
     mapDtoToData,
   );
+  const cartViewModel = useCartViewModel();
 
   useEffect(() => {
     getProducts();
@@ -41,15 +43,11 @@ export function useProductsViewModel(): ProductsViewModel {
   }
 
   function addToCart(product: Product) {
-    // TODO Adicionar logica para adicionar ao carrinho
-    // possivelmente utilizando um recurso do futuro modulo cart
-    console.log('@@@ addToCart', product);
+    cartViewModel.addProduct(product);
   }
 
   function removeFromCart(productId: string) {
-    // TODO Adicionar logica para remover do carrinho
-    // possivelmente utilizando um recurso do futuro modulo cart
-    console.log('@@@ removeFromCart', productId);
+    cartViewModel.removeProduct(productId);
   }
 
   return {
