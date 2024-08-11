@@ -2,7 +2,7 @@
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "rootDirs": ["src"],
-    "typeRoots": ["./src/assets"],
+    "typeRoots": ["./node_modules/@types", "./src/assets"],
     "paths": {
       "@assets/*": ["./src/assets/*"],
       "@cart/*": ["./src/modules/cart/*"],
