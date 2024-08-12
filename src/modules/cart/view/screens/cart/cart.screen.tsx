@@ -25,15 +25,26 @@ export function CartScreen() {
     );
   }
 
+  if (cartViewModel.productCount < 1) {
+    return (
+      <SafeArea style={styles.container}>
+        <Text style={styles.noProductsAdded}>Nenhum produto adicionado</Text>
+      </SafeArea>
+    );
+  }
+
   return (
-    <SafeArea>
-      <Text>{cartViewModel.productCount.toString()} produtos na sacola</Text>
-      <FlatList
-        data={cartViewModel.products}
-        renderItem={({ item }) => renderProduct(item)}
-        style={styles.container}
-        ItemSeparatorComponent={Separator}
-      />
+    <SafeArea style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.quantityText}>
+          {cartViewModel.productCount.toString()} produtos adicionados:
+        </Text>
+        <FlatList
+          data={cartViewModel.products}
+          renderItem={({ item }) => renderProduct(item)}
+          ItemSeparatorComponent={Separator}
+        />
+      </View>
     </SafeArea>
   );
 }
