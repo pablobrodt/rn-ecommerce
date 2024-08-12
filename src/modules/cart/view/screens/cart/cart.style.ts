@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
   },
   content: {
     padding: 12,
+    flexGrow: 1,
+    width: '100%',
   },
   separator: {
     backgroundColor: Colors.NEUTRAL_REGULAR,
