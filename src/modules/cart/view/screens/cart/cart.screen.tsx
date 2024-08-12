@@ -20,6 +20,7 @@ export function CartScreen() {
         product={product}
         onIncreaseProduct={cartViewModel.increaseProduct}
         onDecreaseProduct={cartViewModel.decreaseProduct}
+        onRemoveProduct={cartViewModel.removeProduct}
       />
     );
   }
