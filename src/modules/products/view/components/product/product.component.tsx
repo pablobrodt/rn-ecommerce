@@ -45,7 +45,9 @@ export function Product({
   return (
     <View style={styles.container}>
       <Image src={product.image} style={styles.image} />
-      <Text style={styles.name}>{product.name}</Text>
+      <Text ellipsis style={styles.name}>
+        {product.name}
+      </Text>
       <Text style={styles.price}>{formatCurrency(product.price)}</Text>
       {renderCardButton()}
     </View>
