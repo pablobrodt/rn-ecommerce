@@ -4,10 +4,15 @@ import { useCartViewModel } from '@cart/viewmodel/cart/cart.viewmodel';
 import { Button } from '@common/view/components/button/button.component';
 import { Colors } from '@common/view/constants/colors';
 import { CartShopping } from '@assets/icons';
+import { CartRoute } from '@cart/view/route/cart.route';
 
 import { styles } from './cart-button.style';
 
-export function CartButton() {
+type CartButtonProps = {
+  navigation: any;
+};
+
+export function CartButton({ navigation }: CartButtonProps) {
   const [hasNewProducts, setHasNewProducts] = useState(false);
   const totalProducts = useRef<number>(0);
   const cartViewModel = useCartViewModel();
@@ -20,7 +25,7 @@ export function CartButton() {
   }, [cartViewModel.productCount]);
 
   function goToCart() {
-    // TODO navega para a tela de carrinho de compras
+    navigation.navigate(CartRoute.CART);
     setHasNewProducts(false);
   }
 
