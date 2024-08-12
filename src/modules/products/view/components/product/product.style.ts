@@ -1,12 +1,14 @@
+import { Colors } from '@common/view/constants/colors';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    borderWidth: 2,
+    borderWidth: 1,
     flex: 1,
     padding: 8,
     justifyContent: 'space-between',
+    backgroundColor: Colors.WHITE,
   },
   image: {
     height: 180,
