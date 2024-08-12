@@ -54,5 +54,5 @@ jobs:
         with:
           artifacts: android/app/build/outputs/apk/release/app-release.apk
           tag: ${{ env.NEW_TAG }}
-          release_name: Release ${{ env.NEW_TAG }}
+          name: Release ${{ env.NEW_TAG }}
           token: ${{ secrets.GITHUB_TOKEN }}
