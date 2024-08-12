@@ -25,7 +25,7 @@ export function RootNavigator() {
         })}
       >
         {routeConfigs.map(([name, component]) => (
-          <StackScreen name={name} component={component} />
+          <StackScreen key={name} name={name} component={component} />
         ))}
       </StackNavigator>
     </NavigationContainer>

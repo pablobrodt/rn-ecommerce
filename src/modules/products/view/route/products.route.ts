@@ -1,4 +1,4 @@
-import { RouteConfig } from '@common/view/router/route-config';
+import { RouteConfig } from '@common/view/route/route-config';
 
 import { ProductsScreen } from '../screens/products/products.screen';
 
