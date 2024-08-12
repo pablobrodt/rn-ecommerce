@@ -1,6 +1,4 @@
-/**
- * @format
- */
+import 'react-native-gesture-handler';
 
 if (__DEV__) {
   require('react-devtools');

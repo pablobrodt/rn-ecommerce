@@ -1,8 +1,13 @@
 import React from 'react';
-import { RootNavigator } from '@common/view/router/root-navigator';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { RootNavigator } from '@common/view/route/root-navigator';
 
 function App(): React.JSX.Element {
-  return <RootNavigator />;
+  return (
+    <GestureHandlerRootView>
+      <RootNavigator />
+    </GestureHandlerRootView>
+  );
 }
 
 export default App;
