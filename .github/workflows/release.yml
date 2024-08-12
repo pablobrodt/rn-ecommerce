@@ -1,0 +1,55 @@
+name: Build, Tag, and Release APK
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Decode keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/my-release-key.keystore
+
+      - name: Set up gradle.properties
+        run: |
+          echo "MYAPP_RELEASE_STORE_FILE=my-release-key.keystore" >> $GITHUB_ENV
+          echo "MYAPP_RELEASE_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "MYAPP_RELEASE_STORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "MYAPP_RELEASE_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Build APK
+        run: ./gradlew assembleRelease
+
+      - name: Get current version
+        id: get_version
+        run: |
+          VERSION=$(cat package.json | jq -r '.version')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create new tag
+        id: tag
+        run: |
+          NEW_TAG="v${{ env.VERSION }}"
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+
+      - name: Create Release and Upload APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: android/app/build/outputs/apk/release/app-release.apk
+          tag: ${{ env.NEW_TAG }}
+          release_name: Release ${{ env.NEW_TAG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
