@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Unit Tests
+    name: Pull Request Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
