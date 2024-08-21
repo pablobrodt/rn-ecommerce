@@ -8,7 +8,6 @@ import {
 } from '@products/view/route/products.route';
 import { CartRouteConfig } from '@cart/view/route/cart.route';
 import { CartButton } from '@cart/view/components/cart-button/cart-button.component';
-import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 
 const routeConfigs = [
   ...Object.entries(ProductsRouteConfig),

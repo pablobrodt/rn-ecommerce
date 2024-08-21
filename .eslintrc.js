@@ -6,6 +6,6 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react-hooks/exhaustive-deps': 'off',
-    'react/no-unstable-nested-components': 'allowAsProps',
+    'react/no-unstable-nested-components': 'warn',
   },
 };
