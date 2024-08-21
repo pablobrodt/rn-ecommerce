@@ -2,6 +2,7 @@ import { FlatList, View } from 'react-native';
 import { CartProduct } from '@cart/model/cart-product.model';
 import { Product } from '@cart/view/components/product/product.component';
 import { useCartViewModel } from '@cart/viewmodel/cart/cart.viewmodel';
+import { useZustandCartStore } from '@cart/store/cart/zustand-cart.store';
 import { SafeArea } from '@common/view/components/safe-area/safe-area.component';
 import { Text } from '@common/view/components/text/text.component';
 
@@ -12,7 +13,8 @@ function Separator() {
 }
 
 export function CartScreen() {
-  const cartViewModel = useCartViewModel();
+  const cartStore = useZustandCartStore();
+  const cartViewModel = useCartViewModel(cartStore);
 
   function renderProduct(product: CartProduct) {
     return (

@@ -1,9 +1,9 @@
-import { useCartStore } from '@cart/store/cart/cart.store';
 import type { CartProduct } from '@cart/model/cart-product.model';
+import { CartStore } from '@cart/store/cart/cart.store';
 import type { Product } from '@products/model/product.model';
 
-export function useCartViewModel() {
-  const { products, productCount, setProducts } = useCartStore();
+export function useCartViewModel(store: CartStore) {
+  const { products, productCount, setProducts } = store;
 
   function increaseProduct(productId: string): void {
     const newProducts = products.map((product) => {

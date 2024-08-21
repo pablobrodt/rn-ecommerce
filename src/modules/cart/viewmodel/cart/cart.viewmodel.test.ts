@@ -1,19 +1,21 @@
 import { CartProduct } from '@cart/model/cart-product.model';
-import { useCartStore } from '@cart/store/cart/cart.store';
-import { Product } from '@products/model/product.model';
 import { renderHook } from '@testing-library/react-native';
 import { useCartViewModel } from './cart.viewmodel';
-
-jest.mock('@cart/store/cart/cart.store');
-
-const useCartStoreMock = useCartStore as jest.Mock;
+import { CartStore } from '@cart/store/cart/cart.store';
 
 describe('Cart View Model Tests', () => {
-  const fakeProduct: Product = {
+  const fakeProduct: CartProduct = {
     id: '171',
     image: 'fake-image-url',
     name: 'fake product',
     price: 17.1,
+    quantity: 1,
+  };
+
+  const anotherFakeProduct: CartProduct = {
+    ...fakeProduct,
+    id: '00',
+    name: 'another fake product',
   };
 
   beforeAll(() => {
@@ -21,15 +23,15 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should add a new cart product', () => {
-    const expectedProducts: CartProduct[] = [{ ...fakeProduct, quantity: 1 }];
+    const expectedProducts: CartProduct[] = [fakeProduct];
     const setProductsMock = jest.fn();
-    useCartStoreMock.mockReturnValueOnce({
+    const fakeStore: CartStore = {
       products: [],
       productCount: 0,
       setProducts: setProductsMock,
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     result.current.addProduct(fakeProduct);
 
@@ -38,24 +40,18 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should increase an existing product quantity', () => {
-    const anotherFakeProduct = {
-      ...fakeProduct,
-      id: '00',
-      name: 'another fake product',
-      quantity: 1,
-    };
     const expectedProducts: CartProduct[] = [
       { ...fakeProduct, quantity: 2 },
       anotherFakeProduct,
     ];
     const setProductsMock = jest.fn();
-    useCartStoreMock.mockReturnValueOnce({
-      products: [{ ...fakeProduct, quantity: 1 }, anotherFakeProduct],
+    const fakeStore: CartStore = {
+      products: [fakeProduct, anotherFakeProduct],
       productCount: 2,
       setProducts: setProductsMock,
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     result.current.increaseProduct(fakeProduct.id);
 
@@ -64,24 +60,15 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should decrease an existing product quantity', () => {
-    const anotherFakeProduct = {
-      ...fakeProduct,
-      id: '00',
-      name: 'another fake product',
-      quantity: 1,
-    };
-    const expectedProducts: CartProduct[] = [
-      { ...fakeProduct, quantity: 1 },
-      anotherFakeProduct,
-    ];
+    const expectedProducts: CartProduct[] = [fakeProduct, anotherFakeProduct];
     const setProductsMock = jest.fn();
-    useCartStoreMock.mockReturnValueOnce({
+    const fakeStore: CartStore = {
       products: [{ ...fakeProduct, quantity: 2 }, anotherFakeProduct],
       productCount: 2,
       setProducts: setProductsMock,
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     result.current.decreaseProduct(fakeProduct.id);
 
@@ -90,21 +77,15 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should remove product when decreasing from a quantity of 1', () => {
-    const anotherFakeProduct = {
-      ...fakeProduct,
-      id: '00',
-      name: 'another fake product',
-      quantity: 1,
-    };
     const expectedProducts: CartProduct[] = [anotherFakeProduct];
     const setProductsMock = jest.fn();
-    useCartStoreMock.mockReturnValueOnce({
-      products: [{ ...fakeProduct, quantity: 1 }, anotherFakeProduct],
+    const fakeStore: CartStore = {
+      products: [fakeProduct, anotherFakeProduct],
       productCount: 2,
       setProducts: setProductsMock,
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     result.current.decreaseProduct(fakeProduct.id);
 
@@ -114,13 +95,13 @@ describe('Cart View Model Tests', () => {
 
   it('should remove product', () => {
     const setProductsMock = jest.fn();
-    useCartStoreMock.mockReturnValueOnce({
-      products: [{ ...fakeProduct, quantity: 1 }],
+    const fakeStore: CartStore = {
+      products: [fakeProduct],
       productCount: 1,
       setProducts: setProductsMock,
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     result.current.removeProduct(fakeProduct.id);
 
@@ -129,13 +110,13 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should return true if cart contains product 171', () => {
-    useCartStoreMock.mockReturnValueOnce({
-      products: [{ ...fakeProduct, quantity: 1 }],
+    const fakeStore: CartStore = {
+      products: [fakeProduct],
       productCount: 1,
       setProducts: jest.fn(),
-    });
+    };
 
-    const { result } = renderHook(() => useCartViewModel());
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     const hasProduct = result.current.contains('171');
 
@@ -143,13 +124,12 @@ describe('Cart View Model Tests', () => {
   });
 
   it('should return false if cart dont contains product 171', () => {
-    useCartStoreMock.mockReturnValueOnce({
-      products: [{ ...fakeProduct, id: '00', quantity: 1 }],
+    const fakeStore: CartStore = {
+      products: [anotherFakeProduct],
       productCount: 1,
       setProducts: jest.fn(),
-    });
-
-    const { result } = renderHook(() => useCartViewModel());
+    };
+    const { result } = renderHook(() => useCartViewModel(fakeStore));
 
     const hasProduct = result.current.contains('171');
 

@@ -5,6 +5,7 @@ import { Colors } from '@common/view/constants/colors';
 import { Text } from '@common/view/components/text/text.component';
 import { CartShopping } from '@assets/icons';
 import { CartRoute } from '@cart/view/route/cart.route';
+import { useZustandCartStore } from '@cart/store/cart/zustand-cart.store';
 
 import { styles } from './cart-button.style';
 
@@ -13,7 +14,8 @@ type CartButtonProps = {
 };
 
 export function CartButton({ navigation }: CartButtonProps) {
-  const cartViewModel = useCartViewModel();
+  const zustandCartStore = useZustandCartStore();
+  const cartViewModel = useCartViewModel(zustandCartStore);
 
   function goToCart() {
     navigation.navigate(CartRoute.CART);
