@@ -5,6 +5,7 @@ import { AxiosHttpService } from '@common/services/axios/axios.service';
 import { useHttpViewModel } from '@common/viewmodel/http/http.viewmodel';
 import type { Product } from '@products/model/product.model';
 import type { ProductDto } from '@products/model/product-dto.model';
+import { useZustandCartStore } from '@cart/store/cart/zustand-cart.store';
 
 type ProductsViewModel = {
   products?: Product[];
@@ -33,7 +34,8 @@ export function useProductsViewModel(): ProductsViewModel {
     axiosHttpService,
     mapDtoToData,
   );
-  const cartViewModel = useCartViewModel();
+  const zustandCartStore = useZustandCartStore();
+  const cartViewModel = useCartViewModel(zustandCartStore);
 
   useEffect(() => {
     getProducts();
